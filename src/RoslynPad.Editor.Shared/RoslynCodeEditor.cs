@@ -153,13 +153,19 @@ namespace RoslynPad.Editor
             {
                 return;
             }
-
-            var text = await document.GetTextAsync().ConfigureAwait(false);
-            var caretOffset = CaretOffset;
-            if (caretOffset <= text.Length)
+            try
             {
-                var result = await _braceMatchingService.GetAllMatchingBracesAsync(document, caretOffset, token).ConfigureAwait(true);
-                _braceMatcherHighlighter.SetHighlight(result.leftOfPosition, result.rightOfPosition);
+                var text = await document.GetTextAsync().ConfigureAwait(false);
+                var caretOffset = CaretOffset;
+                if (caretOffset <= text.Length)
+                {
+                    var result = await _braceMatchingService.GetAllMatchingBracesAsync(document, caretOffset, token).ConfigureAwait(true);
+                    _braceMatcherHighlighter.SetHighlight(result.leftOfPosition, result.rightOfPosition);
+                }
+            }
+            catch
+            {
+
             }
         }
 
